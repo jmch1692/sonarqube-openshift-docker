@@ -1,7 +1,6 @@
-FROM jboss/base-jdk:8
+FROM openjdk:11-jre
 
-MAINTAINER Erik Jacobs <erikmjacobs@gmail.com>
-MAINTAINER Siamak Sadeghianfar <siamaksade@gmail.com>
+MAINTAINER Firebird Team <DevOpsEngineeringTeam558@skydrive3M.onmicrosoft.com>
 
 ENV SONAR_VERSION=7.9.1 \
     SONARQUBE_HOME=/opt/sonarqube \
