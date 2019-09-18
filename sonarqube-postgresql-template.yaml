@@ -49,7 +49,7 @@ objects:
         tags: sonarqube
       from:
         kind: DockerImage
-        name: openshiftdemos/sonarqube:${SONARQUBE_VERSION}
+        name: harbourc01.mmm.com/devops/sonar:latest
       importPolicy: {}
       name: ${SONARQUBE_VERSION}
 - apiVersion: v1
@@ -125,6 +125,8 @@ objects:
           volumeMounts:
           - mountPath: /opt/sonarqube/data
             name: sonarqube-data
+          - mountPath: /opt/sonarqube/extentions
+            name: sonarqube-extensions
         dnsPolicy: ClusterFirst
         restartPolicy: Always
         securityContext: {}
@@ -133,6 +135,9 @@ objects:
         - name: sonarqube-data
           persistentVolumeClaim:
             claimName: sonarqube-data
+        - name: sonarqube-extensions
+          persistentVolumeClaim:
+            claimName: sonarqube-extensions
     triggers:
     - type: ConfigChange
     - imageChangeParams:
@@ -267,9 +272,19 @@ objects:
     resources:
       requests:
         storage: ${SONAR_VOLUME_CAPACITY}
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    name: sonarqube-extensions
+  spec:
+    accessModes:
+    - ReadWriteOnce
+    resources:
+      requests:
+        storage: ${SONAR_VOLUME_PLUGIN_CAPACITY}
 parameters:
 - displayName: SonarQube version
-  value: "6.7"
+  value: "7.9.1"
   name: SONARQUBE_VERSION
   required: true
 - description: Password for SonarQube Server PostgreSQL backend
@@ -286,5 +301,10 @@ parameters:
 - description: Volume space available for SonarQube
   displayName: SonarQube Volume Capacity
   name: SONAR_VOLUME_CAPACITY
+  required: true
+  value: 1Gi
+- description: Volume space available for SonarQube for plugins
+  displayName: SonarQube Volume Plugins Capacity
+  name: SONAR_VOLUME_PLUGIN_CAPACITY
   required: true
   value: 1Gi
