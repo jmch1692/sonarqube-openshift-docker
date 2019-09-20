@@ -83,6 +83,7 @@ objects:
           deploymentconfig: sonarqube
       spec:
         containers:
+        
         - env:
           - name: SONARQUBE_JDBC_PASSWORD
             value: ${POSTGRESQL_PASSWORD}
@@ -93,6 +94,8 @@ objects:
           image: ' '
           imagePullPolicy: IfNotPresent
           name: sonarqube
+          command: ["sysctl"]
+          args: ["vm.max_map_count=262144"]
           ports:
           - containerPort: 9000
             protocol: TCP
