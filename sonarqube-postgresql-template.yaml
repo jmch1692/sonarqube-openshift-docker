@@ -60,6 +60,10 @@ objects:
       deploymentconfig: sonarqube
     name: sonarqube
   spec:
+    securityContext:
+      sysctls:
+      - name: vm.max_map_count
+        value: "262144"
     replicas: 1
     selector:
       app: sonarqube
@@ -83,7 +87,6 @@ objects:
           deploymentconfig: sonarqube
       spec:
         containers:
-        
         - env:
           - name: SONARQUBE_JDBC_PASSWORD
             value: ${POSTGRESQL_PASSWORD}
@@ -94,8 +97,6 @@ objects:
           image: ' '
           imagePullPolicy: IfNotPresent
           name: sonarqube
-          command: ["sysctl"]
-          args: ["vm.max_map_count=262144"]
           ports:
           - containerPort: 9000
             protocol: TCP
