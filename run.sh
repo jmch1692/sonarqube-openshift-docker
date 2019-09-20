@@ -4,6 +4,7 @@ set -e
 
 if [ "${1:0:1}" != '-' ]; then
   exec "$@"
+  sysctl -w vm.max_map_count=262144
 fi
 
 exec java -jar lib/sonar-application-$SONAR_VERSION.jar \
